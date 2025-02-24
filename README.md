@@ -1,202 +1,95 @@
 # Run MATLAB in GitHub Codespaces
 
-This repository shows how to run MATLAB&reg; in [GitHub&trade; Codespaces](https://github.com/features/codespaces).
+This repository shows how to run MATLAB&reg; in [GitHub&trade; Codespaces](https://github.com/features/codespaces), so you can quickly start a development environment for developing the MATLAB code hosted in your Github repository.
 
-## Get Started
 
-A [codespace (GitHub Docs)](https://docs.github.com/en/codespaces/overview) is a development environment you can run in the cloud. Codespaces run in Docker containers called development containers, or [dev containers (GitHub Docs)](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers). You can customize your codespace by modifying `devcontainer.json`, the configuration file of the dev container.
+## Table of Contents
+- [When Should I Use MATLAB in Codespaces?](#when-should-i-use-matlab-in-codespaces)
+- [Choose a Configuration](#choose-a-configuration)
+- [Use MATLAB in Codespaces](#use-matlab-in-codespaces)
+  - [What Can I Do With MATLAB in VS Code?](#what-can-i-do-with-matlab-in-vs-code)
+  - [What Can I Do With MATLAB in JupyterLab?](#what-can-i-do-with-matlab-in-jupyterlab)
+- [Related Links](#related-links)    
 
-The examples in this repository show different ways you can configure your dev containers to run MATLAB in codespaces. For each example, you can find the corresponding `devcontainer.json` configuration file in the [.devcontainer](./.devcontainer) folder.
 
-1. [Using the MATLAB Image on Docker Hub](#using-the-matlab-image-on-docker-hub)
-2. [Using the MATLAB Image on Docker Hub and MATLAB Proxy](#using-the-matlab-image-on-docker-hub-and-matlab-proxy)
-3. [Using the MATLAB Devcontainer Feature](#using-the-matlab-devcontainer-feature)
-4. [Using MATLAB with Jupyter](#using-matlab-with-jupyter)
-5. [Using MATLAB Dockerfile](#using-MATLAB-dockerfile)
+## When Should I Use MATLAB in Codespaces?
 
-## Using the MATLAB Image on Docker Hub
+A [codespace (GitHub Docs)](https://docs.github.com/en/codespaces/overview) is a development environment you run in the cloud. If you own a Github repository hosting MATLAB code, users of your repository can use Codespaces to:
+- Configure a consistent and customizable development environment.
+- Run MATLAB along with other software or programming languages.
+- Use Git to contribute back to your repository.
 
-To run a dev container with MATLAB using the [MATLAB Image on Docker Hub](https://hub.docker.com/r/mathworks/matlab), use this `devcontainer.json` configuration:
+## Choose a Configuration
 
-```json
-{
-  "name": "MATLAB",
-  "image": "mathworks/matlab:latest",
-  "waitFor": "updateContentCommand",
-  "updateContentCommand": {
-    "install-git": "sudo apt-get update && sudo apt-get install git -y"
-  }
-}
-```
+Codespaces run in Docker containers called development containers, or [dev containers (GitHub Docs)](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers). You can customize how MATLAB is installed in your codespace by modifying the configuration file of the dev container, named `devcontainer.json`. Choose the configuration that corresponds to your desired use case.
 
-## Using the MATLAB Image on Docker Hub and MATLAB Proxy
+| Use Case  | Recommendation | Start Codespace Using Recommended Configuration |
+| ------------- | ------------- |------------- |
+|Use MATLAB only|Use a prebuilt [MATLAB Container on Docker Hub](https://hub.docker.com/r/mathworks/matlab). <br><br>Configure your codespace using this [devcontainer.json](.devcontainer/devcontainer.json).|[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/mathworks-ref-arch/matlab-codespaces?template=false&devcontainer_path=.devcontainer%2Fdevcontainer.json)|
+|Customize MATLAB installation with specific toolboxes or other software|Create a custom MATLAB container image using [MATLAB Dockerfile](https://github.com/mathworks-ref-arch/matlab-dockerfile). You can see an example Dockerfile in the `.devcontainer/using-matlab-dockerfile` folder. <br><br>Configure your codespace using this [devcontainer.json](.devcontainer/using-matlab-dockerfile/devcontainer.json).|[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/mathworks-ref-arch/matlab-codespaces?template=false&devcontainer_path=.devcontainer%2Fusing-matlab-dockerfile%2Fdevcontainer.json)|
+|Add MATLAB to an existing devcontainer configuration|Use the [MATLAB Feature for Devcontainers](https://github.com/mathworks/devcontainer-features/tree/main/src/matlab). <br><br>Configure your codespace using this [devcontainer.json](.devcontainer/using-devcontainer-feature/devcontainer.json).|[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/mathworks-ref-arch/matlab-codespaces?template=false&devcontainer_path=.devcontainer%2Fusing-devcontainer-feature%2Fdevcontainer.json)||
 
-To run a dev container with the [MATLAB Image on Docker Hub](https://hub.docker.com/r/mathworks/matlab) and [`matlab-proxy`](https://github.com/mathworks/matlab-proxy), which starts MATLAB in a browser tab, use this `devcontainer.json` configuration:
+## Use MATLAB in Codespaces 
 
-```json
-{
-  "name": "MATLAB",
-  "image": "mathworks/matlab:latest",
-  "hostRequirements": {
-    "cpus": 4
-  },
-  "portsAttributes": {
-    "8888": {
-      "label": "MATLAB",
-      "onAutoForward": "openBrowser"
-    }
-  },
-  "waitFor": "updateContentCommand",
-  "updateContentCommand": {
-    "install-git": "sudo apt-get update && sudo apt-get install git -y",
-    "update-matlab-proxy": "sudo python3 -m pip install --upgrade pip matlab-proxy"
-  },
-  "postStartCommand": "run.sh -browser"
-}
-```
+Use your MATLAB codespace to:
+- Run & Debug `.m` files in VS Code
+- Run MATLAB code in Jupyter Notebooks in both VS Code and JupyterLab
+- Switch to the MATLAB IDE to use more MATLAB features.
 
-The `postStartCommand` starts [matlab-proxy](https://github.com/mathworks/matlab-proxy) and `onAutoForward` opens a browser tab running MATLAB.
+By default, your MATLAB codespace starts in a [Visual Studio Code](https://code.visualstudio.com/) environment, and MATLAB opens in a browser tab.
 
-Note: Depending on your system configuration, you might need to click on the link presented in the VSCode terminal to start the browser session.
+![VSCode In Codespaces](img/VSCodeInCodespaces.png)
 
-You can run the dev container configured above in Codespaces:
+For details on using MATLAB in VS Code in your codespace, see [What Can I Do With MATLAB in VS Code?](#what-can-i-do-with-matlab-in-vs-code)
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/mathworks-ref-arch/matlab-codespaces?template=false&devcontainer_path=.devcontainer%2Fdevcontainer.json)
+For details on using MATLAB in JupyterLab in your codespace, see [What Can I Do With MATLAB in JupyterLab?](#what-can-i-do-with-matlab-in-jupyterlab)
 
-## Using the MATLAB Devcontainer Feature
 
-You can add functionality to your dev containers by adding self-contained units of code called [Features (GitHub)](https://github.com/devcontainers/features). For example, to install MATLAB `R2024b` in your dev container with the [MATLAB Feature (GitHub)](https://github.com/mathworks/devcontainer-features), use this `devcontainer.json` configuration:
 
-```json
-{
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "features": {
-    "ghcr.io/mathworks/devcontainer-features/matlab": {}
-  }
-}
-```
 
-This configuration installs the MATLAB Feature on a `ubuntu` base image, with default settings. To customize the settings, modify the [MATLAB Feature Options (GitHub)](https://github.com/mathworks/devcontainer-features/tree/main/src/matlab#options). For example, to install MATLAB `R2023a` instead of `R2024b`, as well as the Symbolic Math Toolbox, use this configuration:
+### What Can I Do With MATLAB in VS Code?
 
-```json
-{
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "features": {
-    "ghcr.io/mathworks/devcontainer-features/matlab": {
-      "release": "r2023a",
-      "products": "MATLAB Symbolic_Math_Toolbox"
-    }
-  }
-}
-```
+Once you have MATLAB set up in your codespace, you can use VS Code to: 
 
-You can run MATLAB R2024b with this configuration in Codespaces:
+1. **Run & Debug MATLAB files in the VS Code editor.**</br>
+   
+   ![Run and Debug MATLAB in VS Code](img/RunAndDebugInVSCode.gif)
+   
+   For more information, see [MATLAB Extension for Visual Studio Code](https://github.com/mathworks/MATLAB-extension-for-vscode).
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/mathworks-ref-arch/matlab-codespaces?template=false&devcontainer_path=.devcontainer%2Fusing-devcontainer-feature%2Fdevcontainer.json)
 
-## Using MATLAB with Jupyter
+2. **Access MATLAB in a browser tab.**</br>
 
-To use MATLAB in JupyterLab, running in codespaces, you can configure your dev container to include [MATLAB Integration for Jupyter](https://github.com/mathworks/jupyter-matlab-proxy). Use one of these methods:
+   ![MATLAB Proxy](img/MATLABinBrowser.png)
 
-1. Use the MATLAB Integration for Jupyter image:
+   For more information on using MATLAB in the browser, see [MATLAB Proxy](https://github.com/mathworks/matlab-proxy).
 
-```json
-{
-  "name": "R2024a MATLAB Integration for Juptyer Prebuilt Image",
-  "image": "ghcr.io/mathworks-ref-arch/matlab-integration-for-jupyter/jupyter-matlab-notebook:r2024a",
-  "hostRequirements": {
-    "cpus": 4
-  }
-}
-```
+3. **Run MATLAB code in Jupyter Notebooks within VS Code.**</br>
 
-2. Use the [MATLAB Integration for Jupyter Dockerfile (GitHub)](https://github.com/mathworks-ref-arch/matlab-integration-for-jupyter/blob/main/matlab/Dockerfile). Customize your `args` as desired:
+   You can run MATLAB code in Jupyter Notebooks, within the VS Code environment. For more information about VS Code support for Jupyter Notebooks, see [Jupyter Notebooks in VS Code (VS Code)](https://code.visualstudio.com/docs/datascience/jupyter-notebooks).
+   
+   ![Jupyter Notebook In VS Code](img/JupyterNotebookInVSCode.gif)
 
-```json
-{
-  "name": "MATLAB Integration for Jupyter Dockerfile",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "args": {
-      "MATLAB_RELEASE": "r2023b",
-      "MATLAB_PRODUCT_LIST": "MATLAB Symbolic_Math_Toolbox",
-      "PYTHON_VERSION": "3.10"
-    }
-  },
-  "hostRequirements": {
-    "cpus": 4
-  }
-}
-```
 
-3. Use the MATLAB Feature and customize the [MATLAB Feature Options (GitHub)](https://github.com/mathworks/devcontainer-features/tree/main/src/matlab#options) to install MATLAB, Python, JupyterLab, and the MATLAB Integration for Jupyter. For example:
+### What Can I Do With MATLAB in JupyterLab?
 
-```json
-{
-  "name": "Using MATLAB with Jupyter",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "hostRequirements": {
-    "cpus": 4
-  },
-  "features": {
-    "ghcr.io/mathworks/devcontainer-features/matlab": {
-      "release": "r2024b",
-      "products": "MATLAB Symbolic_Math_Toolbox",
-      "installJupyterMatlabProxy": true,
-      "installMatlabEngineForPython": true
-    },
-    "ghcr.io/devcontainers/features/python": {
-      "version": "os-provided",
-      "installJupyterlab": true,
-      "configureJupyterlabAllowOrigin": "*"
-    }
-  },
-  "containerUser": "codespace"
-}
-```
+The configurations in [Choose a Configuration](#choose-a-configuration) enable you to run MATLAB in JupyterLab as well as VS Code:
 
-You can run the dev container configured above in Codespaces:
+![Open In JupyterLab](img/OpenInJupyterLab.gif)
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/mathworks-ref-arch/matlab-codespaces?template=false&devcontainer_path=.devcontainer%2Fusing-matlab-with-jupyter%2Fdevcontainer.json)
 
-## Using MATLAB Dockerfile
+After opening JupyterLab in your codespace, you can:
 
-To run a dev container using the [MATLAB Dockerfile](https://github.com/mathworks-ref-arch/matlab-dockerfile) and [`matlab-proxy`](https://github.com/mathworks/matlab-proxy), use this `devcontainer.json` configuration:
+1. **Run MATLAB code in Jupyter Notebooks.**</br>
+   
+   ![Run MATLAB code using Jupyter Notebooks](https://github.com/mathworks/jupyter-matlab-proxy/raw/main/img/JupyterKernel.gif)
 
-```json
-{
-  "name": "Using matlab-dockerfile",
-  "build": {
-    // See: https://github.com/mathworks-ref-arch/matlab-dockerfile
-    "dockerfile": "Dockerfile",
-    "args": {
-      "MATLAB_RELEASE": "r2024b",
-      "MATLAB_PRODUCT_LIST": "MATLAB Symbolic_Math_Toolbox"
-    }
-  },
-  "hostRequirements": {
-    "cpus": 4
-  },
-  "portsAttributes": {
-    "8888": {
-      "label": "MATLAB",
-      "onAutoForward": "openBrowser"
-    }
-  },
-  "waitFor": "updateContentCommand",
-  "updateContentCommand": {
-    "install-git-and-proxy": "sudo apt-get update && sudo apt-get install --no-install-recommends -y git python3 python3-pip xvfb && sudo python3 -m pip install --upgrade matlab-proxy"
-  },
-  "postStartCommand": "env MWI_APP_PORT=8888 matlab-proxy-app"
-}
-```
+2. **Access MATLAB in a browser window.**</br>
+      
+   ![Access the MATLAB in a browser window](https://github.com/mathworks/jupyter-matlab-proxy/raw/main/img/JupyterMATLABDesktop.gif)
 
-You can run this dev container in Codespaces:
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/mathworks-ref-arch/matlab-codespaces?template=false&devcontainer_path=.devcontainer%2Fusing-matlab-dockerfile%2Fdevcontainer.json)
-
-## Related Links
-
+## Related Links 
 - [Overview of Codespaces (GitHub)](https://docs.github.com/en/codespaces/overview)
 - [Development Container Features (GitHub)](https://github.com/devcontainers/features/)
 - [Development Container Specification (Microsoft&reg;)](https://containers.dev/implementors/spec/)
@@ -205,6 +98,6 @@ You can run this dev container in Codespaces:
 
 ---
 
-Copyright 2024 The MathWorks, Inc.
+Copyright 2024-2025 The MathWorks, Inc.
 
 ---
