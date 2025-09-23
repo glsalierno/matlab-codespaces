@@ -12,7 +12,7 @@
   "name": "Built using MathWorks Docker Hub Image",
   "image": "mathworks/matlab:latest",
   "onCreateCommand": {
-    "install-dependencies": "sudo apt-get update && sudo apt-get install --no-install-recommends -y git xvfb"
+    "install-dependencies": "sudo apt-get update && sudo apt-get install --no-install-recommends -y git"
   },
   "updateContentCommand": {
     // dockerhub containers from R2023a onwards use PIPX to install matlab-proxy
@@ -49,10 +49,10 @@
       "settings": {
         "MATLAB.signIn": true,
         // Adds MATLAB's PIPX environments to Python indexer
-        "python.venvPath": "/home/matlab/.local/pipx/venvs/",
+        "python.venvPath": "/home/matlab/.local/share/pipx/venvs/",
         // Marks MATLAB Kernel as a trusted source
         "jupyter.kernels.trusted": [
-          "/home/matlab/.local/pipx/venvs/matlab-proxy/share/jupyter/kernels/jupyter_matlab_kernel/kernel.json"
+          "/home/matlab/.local/share/pipx/venvs/matlab-proxy/share/jupyter/kernels/jupyter_matlab_kernel/kernel.json"
         ]
       }
     }
