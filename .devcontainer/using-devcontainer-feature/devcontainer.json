@@ -46,7 +46,9 @@
     "MATLAB_USERWORKDIR": "${containerWorkspaceFolder}",
     "MATLAB_USE_USERWORK": "1",
     // Enable embedding the desktop into VSCode's Simple Browser
-    "MWI_CUSTOM_HTTP_HEADERS": "{\"Content-Security-Policy\": \"frame-ancestors *\"}"
+    "MWI_CUSTOM_HTTP_HEADERS": "{\"Content-Security-Policy\": \"frame-ancestors *\"}",
+    "MW_DDUX_FORCE_ENABLE": "true",
+    "MW_CONTEXT_TAGS": "MATLAB:CODESPACES:V1"
   },
   // Configure VSCode Extensions
   "customizations": {
