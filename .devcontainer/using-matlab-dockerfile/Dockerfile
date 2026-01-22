@@ -1,4 +1,4 @@
-# Copyright 2019-2025 The MathWorks, Inc.
+# Copyright 2019-2026 The MathWorks, Inc.
 # This Dockerfile allows you to build a Docker® image with MATLAB® installed using the MATLAB Package
 # Manager. Use the optional build arguments to customize the version of MATLAB, list of products to
 # install, and the location at which to install MATLAB.
@@ -25,7 +25,7 @@ ARG LICENSE_SERVER
 
 # When you start the build stage, this Dockerfile by default uses the Ubuntu-based matlab-deps image.
 # To check the available matlab-deps images, see: https://hub.docker.com/r/mathworks/matlab-deps
-FROM mathworks/matlab-deps:${MATLAB_RELEASE}
+FROM docker.io/mathworks/matlab-deps:${MATLAB_RELEASE}
 
 # Declare build arguments to use at the current build stage.
 ARG MATLAB_RELEASE
